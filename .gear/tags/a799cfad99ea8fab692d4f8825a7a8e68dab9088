@@ -1,0 +1,12 @@
+object 8752f2e5ca38d0f8e5c1215e228a20df93b8eda4
+type commit
+tag v0.1.0
+tagger Evgeny Sinelnikov <sin@altlinux.org> 1574724832 +0400
+
+v0.1.0
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQTTb4js5Imnw4ZmYH0cL8A7qSHaygUCXdxk4AAKCRAcL8A7qSHa
+ykasAKCDAYx8YSp0+JOVxtqfAdA/pioo/gCfUDDuzQ7worwCX+3UqT0ML9qjTs0=
+=VdUN
+-----END PGP SIGNATURE-----

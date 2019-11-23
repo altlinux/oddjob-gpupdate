@@ -1,0 +1,2 @@
+tar: v@version@:.
+diff: v@version@:. . name=@name@-@version@-alt.patch

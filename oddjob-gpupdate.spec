@@ -11,7 +11,7 @@ Url: https://github.com/altlinux/oddjob-gpupdate.git
 
 Source: %name-%version.tar
 
-Requires: oddjob
+Requires: oddjob >= 0.34.4-alt4
 
 BuildRequires(pre): rpm-build-licenses
 
@@ -57,4 +57,6 @@ rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
 %config(noreplace) %_sysconfdir/oddjobd.conf.d/oddjobd-gpupdate.conf
 
 %changelog
+* Sat Nov 23 2019 Evgeny Sinelnikov <sin@altlinux.org> 0.1.0-alt1
+- Initial build for Sisyphus
 
