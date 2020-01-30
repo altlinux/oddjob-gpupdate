@@ -65,6 +65,9 @@ rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
 %config(noreplace) %_sysconfdir/oddjobd.conf.d/oddjobd-gpupdate.conf
 
 %changelog
+* Thu Jan 30 2020 Evgeny Sinelnikov <sin@altlinux.org> 0.2.0-alt1
+- Add support gpupdate_computer method
+
 * Sat Nov 23 2019 Evgeny Sinelnikov <sin@altlinux.org> 0.1.0-alt1
 - Initial build for Sisyphus
 

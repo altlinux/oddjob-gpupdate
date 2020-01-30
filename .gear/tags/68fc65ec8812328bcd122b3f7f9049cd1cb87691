@@ -1,0 +1,12 @@
+object 4835af07c2a9cc3b5868cf32ae3b48a576a7e2ca
+type commit
+tag v0.2.0
+tagger Evgeny Sinelnikov <sin@altlinux.org> 1580364908 +0400
+
+v0.2.0
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQTTb4js5Imnw4ZmYH0cL8A7qSHaygUCXjJ0bAAKCRAcL8A7qSHa
+yhd3AJoDvOMM9K3GVvOw7sNk6oP/vFIb0ACcCuGe7Az30gBWZsxZpGVE9q13Y94=
+=apkU
+-----END PGP SIGNATURE-----
