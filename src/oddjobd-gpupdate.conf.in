@@ -24,6 +24,12 @@
 
       <interface name="@NAMESPACE@.oddjob_gpupdate">
 
+        <method name="gpupdate_computer">
+          <helper exec="@mypkglibexecdir@/gpupdate"
+                  arguments="0"/>
+          <allow/>
+        </method>
+
         <method name="gpupdate">
           <helper exec="@mypkglibexecdir@/gpupdate"
                   arguments="0"

@@ -1,7 +1,7 @@
 %define _unpackaged_files_terminate_build 1
 
 Name: oddjob-gpupdate
-Version: 0.1.0
+Version: 0.2.0
 Release: alt1
 Summary: An oddjob helper which applies group policy objects
 
@@ -10,6 +10,7 @@ License: %bsdstyle
 Url: https://github.com/altlinux/oddjob-gpupdate.git
 
 Source: %name-%version.tar
+Patch: %name-%version-alt.patch
 
 Requires: oddjob >= 0.34.4-alt4
 
@@ -27,6 +28,7 @@ pam_oddjob_gpupdate module to applies group policy objects at login-time.
 
 %prep
 %setup
+%patch -p1
 
 %build
 %autoreconf
@@ -45,6 +47,12 @@ mkdir -p %buildroot/%_lib/security
 mv %buildroot%_libdir/security/pam_oddjob_gpupdate.so \
 %buildroot/%_lib/security/
 rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
+
+%post
+%post_service oddjobd
+
+%preun
+%preun_service oddjobd
 
 %files
 %doc COPYING src/gpupdatefor src/gpupdateforme

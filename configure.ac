@@ -1,4 +1,4 @@
-AC_INIT(oddjob-gpupdate,0.1.0)
+AC_INIT(oddjob-gpupdate,0.2.0)
 AC_PREREQ(2.59)
 PACKAGE_NAME_CAPS=`echo $PACKAGE_NAME | tr '[a-z]' '[A-Z]'`
 AC_DEFINE_UNQUOTED(PACKAGE_NAME_CAPS,"$PACKAGE_NAME_CAPS",[Define to the package name, in caps.])

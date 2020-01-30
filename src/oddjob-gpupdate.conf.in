@@ -45,4 +45,14 @@
            send_member="gpupdate"/>
   </policy>
 
+  <!-- Allow anyone to try to call the gpupdate_computer method, which is part
+       of the "gpupdate" interface implemented by the "/" object provided
+       by the @NAMESPACE@.oddjob_gpupdate service. -->
+  <policy context="default">
+    <allow send_destination="@NAMESPACE@.oddjob_gpupdate"
+           send_path="/"
+           send_interface="@NAMESPACE@.oddjob_gpupdate"
+           send_member="gpupdate_computer"/>
+  </policy>
+
 </busconfig>

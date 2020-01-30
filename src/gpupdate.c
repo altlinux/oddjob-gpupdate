@@ -93,34 +93,40 @@ gpupdate(const char *user, int flags)
 {
 	int ret;
 	struct stat st;
+	const char *log_user = user;
 
-	/* Now make sure that the user
-	   a) exists
-	   b) has a home directory specified which is
+	/* Now make sure that the user or computer
+	   a) no user (computer)
+	   b) user exists
+	   c) has a home directory specified which is
 	      1) an absolute pathname
 	      2) not an empty string
 	      3) not already there */
-	pwd = getpwnam(user);
-	if (pwd == NULL) {
-		syslog(LOG_ERR, "could not look up location of home directory "
-		       "for %s", user);
+	if (user != NULL) {
+		pwd = getpwnam(user);
+		if (pwd == NULL) {
+			syslog(LOG_ERR, "could not look up location of home directory "
+			       "for %s", user);
+		} else {
+			if (pwd->pw_dir == NULL) {
+				syslog(LOG_ERR, "user %s has NULL home directory", user);
+			}
+			if ((strlen(pwd->pw_dir) == 0) || (pwd->pw_dir[0] != '/')) {
+				syslog(LOG_ERR, "user %s has weird home directory (%s)", user,
+				       pwd->pw_dir);
+			}
+		}
 	} else {
-		if (pwd->pw_dir == NULL) {
-			syslog(LOG_ERR, "user %s has NULL home directory", user);
-		}
-		if ((strlen(pwd->pw_dir) == 0) || (pwd->pw_dir[0] != '/')) {
-			syslog(LOG_ERR, "user %s has weird home directory (%s)", user,
-			       pwd->pw_dir);
-		}
+		log_user = "computer";
 	}
 	/* Figure out which executable we're using as a applier. */
 	exe = get_gpo_exe();
 	if (exe != NULL) {
 		/* Set the text of the result message. */
 		if (!(flags & FLAG_QUIET)) {
-			printf(_("Apply group policies for %s."), user);
+			printf(_("Apply group policies for %s."), log_user);
 		}
-		syslog(LOG_NOTICE, "Apply group policies for %s.", user);
+		syslog(LOG_NOTICE, "Apply group policies for %s.", log_user);
 
 		if (stat(exe, &st) != 0) {
 			syslog(LOG_ERR, "stat of for applier (%s) is failed", exe);
@@ -134,7 +140,7 @@ gpupdate(const char *user, int flags)
 		ret = apply_gpo(user);
 		if (ret != 0) {
 			syslog(LOG_ERR,
-			       "error applying GPO for %s (error code %d)", user, ret);
+			       "error applying GPO for %s (error code %d)", log_user, ret);
 			return HANDLER_FAILURE;
 		}
 	}
@@ -144,14 +150,14 @@ gpupdate(const char *user, int flags)
 int
 main(int argc, char **argv)
 {
-	char **args, *p;
-	int i, flags = 0;
+	char **oddjob_argv, *p;
+	int oddjob_argc, ret, flags = 0;
 
 	openlog(PACKAGE "-gpupdate", LOG_PID, LOG_DAEMON);
 	gpo_exe = "/usr/sbin/gpoa";
 
-	while ((i = getopt(argc, argv, "qp:")) != -1) {
-		switch (i) {
+	while ((ret = getopt(argc, argv, "qp:")) != -1) {
+		switch (ret) {
 		case 'q':
 			flags |= FLAG_QUIET;
 			break;
@@ -163,21 +169,28 @@ main(int argc, char **argv)
 				"-q\tDo not print messages when applying "
 				"a policy.\n"
 				"-p PATH\tOverride the gpo applier "
-				"binary (\"%s\").\n", exe);
+				"binary (\"%s\").\n", gpo_exe);
 			return 1;
 		}
 	}
-	args = oddjob_collect_args(stdin);
-	for (i = 0; (args != NULL) && (args[i] != NULL); i++) {
-		if (strlen(args[i]) > 0) {
-			i = gpupdate(args[i], flags);
-			oddjob_free_args(args);
-			closelog();
-			return i;
-		}
+	ret = HANDLER_INVALID_INVOCATION;
+	oddjob_argv = oddjob_collect_args(stdin);
+	for (oddjob_argc = 0; (oddjob_argv != NULL) && (oddjob_argv[oddjob_argc] != NULL); oddjob_argc++) {
+		if (oddjob_argc > 1)
+			break;
 	}
-	oddjob_free_args(args);
-	syslog(LOG_ERR, "invoked with no non-empty arguments");
+	switch (oddjob_argc) {
+	case 0:
+		ret = gpupdate(NULL, flags);
+		break;
+	case 1:
+		if (strlen(oddjob_argv[0]) > 0)
+			ret = gpupdate(oddjob_argv[0], flags);
+		break;
+	default:
+		syslog(LOG_ERR, "invoked with wrong arguments");
+	}
+	oddjob_free_args(oddjob_argv);
 	closelog();
-	return HANDLER_INVALID_INVOCATION;
+	return ret;
 }
