@@ -114,6 +114,12 @@ gpupdate(const char *user, int flags)
 	      2) not an empty string
 	      3) not already there */
 	if (user != NULL) {
+		// prevent any attempts to smuggle in command line switches
+		if (user[0] == '-') {
+			syslog(LOG_ERR, "rejecting suspicious username %s", user);
+			return HANDLER_INVALID_INVOCATION;
+		}
+
 		pwd = getpwnam(user);
 		if (pwd == NULL) {
 			syslog(LOG_ERR, "could not look up location of home directory "
