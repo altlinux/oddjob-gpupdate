@@ -85,9 +85,9 @@ static int apply_gpo(enum Target target, const char *user)
 		return 1;
 	case 0:
 		if (target == Computer) {
-			execl(exe, "--target=Computer", NULL);
+			execl(exe, exe, "--target=Computer", NULL);
 		} else if (target == User) {
-			execl(exe, "--target=User", "-U", user, NULL);
+			execl(exe, exe, "--target=User", "-U", user, NULL);
 		}
 		return 3;
 	default:
