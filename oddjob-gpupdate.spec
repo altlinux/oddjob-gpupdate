@@ -1,37 +1,49 @@
-%define _unpackaged_files_terminate_build 1
+#
+# spec file for package oddjob-gpupdate
+#
+# Copyright (c) 2022 SUSE LLC
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
 
-Name: oddjob-gpupdate
-Version: 0.2.0
-Release: alt1
-Summary: An oddjob helper which applies group policy objects
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
+#
 
-Group: System/Servers
-License: %bsdstyle
-Url: https://github.com/altlinux/oddjob-gpupdate.git
 
-Source: %name-%version.tar
-Patch: %name-%version-alt.patch
+Name:           oddjob-gpupdate
+Version:        0.2.0
+Release:        0
+Summary:        An oddjob helper which applies group policy objects
+License:        BSD-3-Clause
+URL:            https://github.com/openSUSE/oddjob-gpupdate.git
+Source:         %{name}-%{version}.tar.bz2
+Group:          System/Servers
+Requires:       oddjob
 
-Requires: oddjob
-
-BuildRequires(pre): rpm-build-licenses
-
-BuildRequires: xmlto
-BuildRequires: libdbus-devel
-BuildRequires: libxml2-devel
-BuildRequires: libpam0-devel
-BuildRequires: libselinux-devel
+BuildRequires:  autoconf
+BuildRequires:  dbus-1-devel
+BuildRequires:  libselinux-devel
+BuildRequires:  libtool
+BuildRequires:  libxml2-devel
+BuildRequires:  oddjob
+BuildRequires:  pam-devel
+BuildRequires:  xmlto
 
 %description
 This package contains the oddjob helper which can be used by the
-pam_oddjob_gpupdate module to applies group policy objects at login-time.
+pam_oddjob_gpupdate module to apply group policy objects at login-time.
 
 %prep
 %setup
-%patch -p1
 
 %build
-%autoreconf
+autoreconf -if
 %configure \
     --disable-static \
     --enable-pie \
@@ -41,23 +53,21 @@ pam_oddjob_gpupdate module to applies group policy objects at login-time.
 %make_build
 
 %install
-%makeinstall_std
-
-mkdir -p %buildroot/%_lib/security
-mv %buildroot%_libdir/security/pam_oddjob_gpupdate.so \
-%buildroot/%_lib/security/
-rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
+%makeinstall
 
 %post
-%post_service oddjobd
-
-%preun
-%preun_service oddjobd
+if test $1 -eq 1 ; then
+	killall -HUP dbus-daemon 2>&1 > /dev/null
+fi
+if [ -f /var/lock/subsys/oddjobd ] ; then
+	/bin/dbus-send --system --dest=com.redhat.oddjob /com/redhat/oddjob com.redhat.oddjob.reload
+fi
 
 %files
 %doc COPYING src/gpupdatefor src/gpupdateforme
 %_libexecdir/oddjob/gpupdate
-/%_lib/security/pam_oddjob_gpupdate.so
+%_pam_moduledir/pam_oddjob_gpupdate.so
+%exclude %_pam_moduledir/pam_oddjob_gpupdate.la
 %_mandir/*/pam_oddjob_gpupdate.*
 %_mandir/*/oddjob-gpupdate.*
 %_mandir/*/oddjobd-gpupdate.*
@@ -65,4 +75,3 @@ rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
 %config(noreplace) %_sysconfdir/oddjobd.conf.d/oddjobd-gpupdate.conf
 
 %changelog
-

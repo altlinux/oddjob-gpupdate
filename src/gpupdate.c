@@ -56,6 +56,12 @@ static struct passwd *pwd;
 
 #define FLAG_QUIET	(1 << 1)
 
+enum Target
+{
+	Computer,
+	User
+};
+
 /*
  * get_gpo_dir
  *
@@ -66,10 +72,10 @@ static struct passwd *pwd;
 static const char *
 get_gpo_exe(void)
 {
-	return gpo_exe ? gpo_exe : "/usr/sbin/gpoa";
+	return gpo_exe ? gpo_exe : "/usr/sbin/samba-gpupdate";
 }
 
-static int apply_gpo(const char *user)
+static int apply_gpo(enum Target target, const char *user)
 {
 	int status;
 	pid_t pid = fork();
@@ -78,7 +84,11 @@ static int apply_gpo(const char *user)
 	case -1:
 		return 1;
 	case 0:
-		execl(exe, exe, user, NULL);
+		if (target == Computer) {
+			execl(exe, exe, "--target=Computer", NULL);
+		} else if (target == User) {
+			execl(exe, exe, "--target=User", "-U", user, NULL);
+		}
 		return 3;
 	default:
 		if (waitpid(pid, &status, 0) < 0)
@@ -94,6 +104,7 @@ gpupdate(const char *user, int flags)
 	int ret;
 	struct stat st;
 	const char *log_user = user;
+	enum Target target;
 
 	/* Now make sure that the user or computer
 	   a) no user (computer)
@@ -103,6 +114,12 @@ gpupdate(const char *user, int flags)
 	      2) not an empty string
 	      3) not already there */
 	if (user != NULL) {
+		// prevent any attempts to smuggle in command line switches
+		if (user[0] == '-') {
+			syslog(LOG_ERR, "rejecting suspicious username %s", user);
+			return HANDLER_INVALID_INVOCATION;
+		}
+
 		pwd = getpwnam(user);
 		if (pwd == NULL) {
 			syslog(LOG_ERR, "could not look up location of home directory "
@@ -116,8 +133,10 @@ gpupdate(const char *user, int flags)
 				       pwd->pw_dir);
 			}
 		}
+		target = User;
 	} else {
-		log_user = "computer";
+		target = Computer;
+		user = NULL;
 	}
 	/* Figure out which executable we're using as a applier. */
 	exe = get_gpo_exe();
@@ -137,7 +156,7 @@ gpupdate(const char *user, int flags)
 				return HANDLER_INVALID_INVOCATION;
 			}
 		}
-		ret = apply_gpo(user);
+		ret = apply_gpo(target, user);
 		if (ret != 0) {
 			syslog(LOG_ERR,
 			       "error applying GPO for %s (error code %d)", log_user, ret);
@@ -154,7 +173,7 @@ main(int argc, char **argv)
 	int oddjob_argc, ret, flags = 0;
 
 	openlog(PACKAGE "-gpupdate", LOG_PID, LOG_DAEMON);
-	gpo_exe = "/usr/sbin/gpoa";
+	gpo_exe = "/usr/sbin/samba-gpupdate";
 
 	while ((ret = getopt(argc, argv, "qp:")) != -1) {
 		switch (ret) {
