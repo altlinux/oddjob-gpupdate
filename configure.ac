@@ -1,4 +1,4 @@
-AC_INIT(oddjob-gpupdate,0.2.0)
+AC_INIT(oddjob-gpupdate,0.2.1)
 AC_PREREQ(2.59)
 PACKAGE_NAME_CAPS=`echo $PACKAGE_NAME | tr '[a-z]' '[A-Z]'`
 AC_DEFINE_UNQUOTED(PACKAGE_NAME_CAPS,"$PACKAGE_NAME_CAPS",[Define to the package name, in caps.])
@@ -57,7 +57,7 @@ AC_SUBST(PAM_LIBS)
 AM_CONDITIONAL(BUILD_PAM,test x$pam = xyes)
 
 dnl Oh, for the clear management of OID arcs....
-NAMESPACE=com.redhat
+NAMESPACE=ru.basealt
 AC_SUBST(NAMESPACE)
 NAMESPACEPATH=`echo "$NAMESPACE" | sed -e 's,^,/,' -e 's,\.,/,g'`
 AC_SUBST(NAMESPACEPATH)

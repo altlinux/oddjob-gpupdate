@@ -13,7 +13,7 @@ tag: compare_versions
 force-tag: compare_versions
 	git tag -f $(TAG)
 
-REPOSITORY=$(shell git config remote.origin.url 2> /dev/null || /bin/pwd)
+REPOSITORY=$(shell git config remote.upstream.url 2> /dev/null || /bin/pwd)
 ARCHIVEOUTDIR=$(shell cd $(top_srcdir) && pwd)
 
 archive:

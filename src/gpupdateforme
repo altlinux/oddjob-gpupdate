@@ -1,2 +1,2 @@
 #!/bin/sh
-dbus-send --system --dest=com.redhat.oddjob_gpupdate --print-reply / com.redhat.oddjob_gpupdate.gpupdate
+dbus-send --system --dest=ru.basealt.oddjob_gpupdate --print-reply / ru.basealt.oddjob_gpupdate.gpupdate
