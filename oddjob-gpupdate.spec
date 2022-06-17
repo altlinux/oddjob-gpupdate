@@ -65,6 +65,9 @@ rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
 %config(noreplace) %_sysconfdir/oddjobd.conf.d/oddjobd-gpupdate.conf
 
 %changelog
+* Tue Jun 14 2022 Evgeny Sinelnikov <sin@altlinux.org> 0.2.1-alt1
+- Rename D-Bus service name to ru.basealt.oddjob_gpupdate
+
 * Thu Jan 30 2020 Evgeny Sinelnikov <sin@altlinux.org> 0.2.0-alt1
 - Add support gpupdate_computer method
 
