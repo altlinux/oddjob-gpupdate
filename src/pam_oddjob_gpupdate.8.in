@@ -23,7 +23,13 @@ user is not authorized to use them, then \fIoddjobd\fR will ignore the
 module's requests.
 
 .SH OPTIONS
-The module takes no options.  What \fIoddjobd\fR does in response to the
+.PP
+\fBdbus_timeout\fR
+.RS 4
+D-Bus oddjob request timeout in seconds
+.RE
+.PP
+What \fIoddjobd\fR does in response to the
 module's request is controlled by the daemon's configuration file, typically
 \fI@mysysconfdir@/oddjobd.conf.d/oddjobd-gpupdate.conf\fR.
 
