@@ -1,2 +1,2 @@
 tar: v@version@:.
-diff: v@version@:. . name=@name@-@version@-alt.patch
+diff: v@version@:. . name=@name@-@version@-alt.patch exclude=.gear/** exclude=oddjob-gpupdate.spec

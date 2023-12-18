@@ -65,6 +65,9 @@ rm %buildroot%_libdir/security/pam_oddjob_gpupdate.la
 %config(noreplace) %_sysconfdir/oddjobd.conf.d/oddjobd-gpupdate.conf
 
 %changelog
+* Mon Dec 18 2023 Evgeny Sinelnikov <sin@altlinux.org> 0.2.2-alt1
+- Add debug and dbus_timeout options to pam_oddjob_gpupdate (thx liannnix@)
+
 * Tue Jun 14 2022 Evgeny Sinelnikov <sin@altlinux.org> 0.2.1-alt1
 - Rename D-Bus service name to ru.basealt.oddjob_gpupdate
 

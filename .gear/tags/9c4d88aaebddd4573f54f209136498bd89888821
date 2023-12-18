@@ -1,0 +1,12 @@
+object d271ab76f95cfea1ede9c10b1d8ff858462df8ea
+type commit
+tag v0.2.2
+tagger Evgeny Sinelnikov <sin@altlinux.org> 1702866914 +0400
+
+v0.2.2
+-----BEGIN PGP SIGNATURE-----
+
+iEYEABECAAYFAmV/r+IACgkQHC/AO6kh2spFKgCgq6Lbt7VNg2p8Xf8fpi7k2CtM
+9hIAoO4OGFD3VEoEeaprODIvXh81AMZX
+=iFA4
+-----END PGP SIGNATURE-----
