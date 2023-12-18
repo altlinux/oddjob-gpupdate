@@ -1,7 +1,7 @@
 %define _unpackaged_files_terminate_build 1
 
 Name: oddjob-gpupdate
-Version: 0.2.1
+Version: 0.2.2
 Release: alt1
 Summary: An oddjob helper which applies group policy objects
 

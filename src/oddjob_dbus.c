@@ -50,6 +50,7 @@
 struct oddjob_dbus_context {
 	DBusBusType bustype;
 	int reconnect_timeout;
+	dbus_bool_t selinux_enabled;
 	struct oddjob_dbus_service {
 		struct oddjob_dbus_context *ctx;
 		DBusConnection *conn;
@@ -155,7 +156,7 @@ oddjob_dbus_listeners_set_reconnect_timeout(struct oddjob_dbus_context *ctx,
 
 /* Create a new master state structure. */
 struct oddjob_dbus_context *
-oddjob_dbus_listeners_new(DBusBusType bustype)
+oddjob_dbus_listeners_new(DBusBusType bustype, dbus_bool_t selinux_enabled)
 {
 	struct oddjob_dbus_context *ctx;
 
@@ -168,6 +169,7 @@ oddjob_dbus_listeners_new(DBusBusType bustype)
 	ctx->reconnect_timeout = 0;
 	ctx->n_services = 0;
 	ctx->services = NULL;
+	ctx->selinux_enabled = selinux_enabled;
 
 	return ctx;
 }
@@ -636,7 +638,7 @@ static DBusHandlerResult
 oddjob_dbus_filter(DBusConnection *conn, DBusMessage *message, void *user_data)
 {
 	struct oddjob_dbus_context *ctx;
-	struct oddjob_dbus_service *srv;
+	struct oddjob_dbus_service *srv = NULL;
 	struct oddjob_dbus_object *obj;
 	struct oddjob_dbus_interface *interface;
 	struct oddjob_dbus_method *method;
@@ -716,7 +718,7 @@ oddjob_dbus_filter(DBusConnection *conn, DBusMessage *message, void *user_data)
 	}
 
 	/* Build our message structure. */
-	msg = oddjob_dbus_message_from_message(conn, message, FALSE, TRUE);
+	msg = oddjob_dbus_message_from_message(conn, message, FALSE, ctx->selinux_enabled);
 	if (msg == NULL) {
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 	}

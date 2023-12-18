@@ -20,7 +20,7 @@ archive:
 	tmpdir=`mktemp -d /tmp/make_archive_XXXXXX`;\
 	if test -d "$$tmpdir" ; then \
 		cd $$tmpdir;\
-		git clone $(REPOSITORY);\
+		git clone $(REPOSITORY) $(PACKAGE);\
 		cd $$tmpdir/$(PACKAGE);\
 		git checkout $(TAG);\
 		./autogen;\

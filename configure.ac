@@ -1,5 +1,5 @@
-AC_INIT(oddjob-gpupdate,0.2.1)
-AC_PREREQ(2.59)
+AC_INIT([oddjob-gpupdate],[0.2.2])
+AC_PREREQ([2.69])
 PACKAGE_NAME_CAPS=`echo $PACKAGE_NAME | tr '[a-z]' '[A-Z]'`
 AC_DEFINE_UNQUOTED(PACKAGE_NAME_CAPS,"$PACKAGE_NAME_CAPS",[Define to the package name, in caps.])
 AC_SUBST(PACKAGE_NAME_CAPS)
@@ -10,7 +10,7 @@ AM_MAINTAINER_MODE
 
 AC_DEFINE(_GNU_SOURCE,1,[Use GNU libc extensions.])
 
-AC_PROG_LIBTOOL
+LT_INIT
 
 DBUS_PACKAGE=dbus-1
 PKG_CHECK_MODULES(DBUS,$DBUS_PACKAGE)
@@ -269,7 +269,7 @@ AM_CONDITIONAL(NOW,[test x$now = xyes])
 AC_CONFIG_COMMANDS(src/gpupdatefor+x,[chmod +x src/gpupdatefor])
 AC_CONFIG_COMMANDS(src/gpupdateforme+x,[chmod +x src/gpupdateforme])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 autoversion
 src/Makefile
@@ -280,3 +280,4 @@ src/oddjob-gpupdate.conf
 src/oddjobd-gpupdate.conf
 src/gpupdatefor
 ])
+AC_OUTPUT

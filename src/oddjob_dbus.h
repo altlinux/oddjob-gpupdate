@@ -39,7 +39,7 @@ struct oddjob_dbus_context;
 struct oddjob_dbus_message;
 
 /* Server */
-struct oddjob_dbus_context *oddjob_dbus_listeners_new(DBusBusType bus);
+struct oddjob_dbus_context *oddjob_dbus_listeners_new(DBusBusType bus, dbus_bool_t selinux_enabled);
 void oddjob_dbus_listeners_reconnect_if_needed(struct oddjob_dbus_context *ctx);
 void oddjob_dbus_listeners_set_reconnect_timeout(struct oddjob_dbus_context *ctx,
 						 int timeout);
