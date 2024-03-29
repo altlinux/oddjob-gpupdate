@@ -1,0 +1,7 @@
+etc/dbus-1/system.d/oddjob-gpupdate.conf
+etc/oddjobd.conf.d/oddjobd-gpupdate.conf
+lib/*/security/pam_oddjob_gpupdate.so
+usr/lib/oddjob/gpupdate
+usr/share/man/man5/oddjob-gpupdate.conf.5
+usr/share/man/man5/oddjobd-gpupdate.conf.5
+usr/share/man/man8/pam_oddjob_gpupdate.8

@@ -1,0 +1,7 @@
+Build Sisyphus package on Debian
+--------------------------------
+
+Building with git-buildpackage on Debian may be in same manner as with gear
+utility on ALT Linux Sisyphus (upstream tag using to autopackage origin sources):
+
+$ gbp buildpackage --git-ignore-branch --git-ignore-new --git-no-sign-tags --git-upstream-tag=v0.2.2

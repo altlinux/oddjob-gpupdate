@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: oddjob-gpupdate
+Upstream-Contact: ALT Linux Team development <devel@lists.altlinux.org>
+Source: https://github.com/altlinux/oddjob-gpupdate
+
+Files: *
+Copyright: 2005-2015 Red Hat, Inc.
+License: BSD-3-clause
+
+Files: src/buffer.h
+Copyright: 2005 Red Hat, Inc.
+License: LGPL-2+
+
+Files: src/gpupdate.c src/pam_oddjob_gpupdate.c
+Copyright: 2019, BaseALT, Ltd.
+License: BSD-3-clause

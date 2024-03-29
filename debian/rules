@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE = 1
+
+DESTDIR=debian/buildroot
+
+%:
+	dh $@ --tmpdir=$(DESTDIR)
+
+override_dh_auto_configure:
+	./autogen
+	dh_auto_configure -- \
+		--disable-static \
+		--enable-pie \
+		--enable-now \
+		--with-selinux-acls \
+		--with-selinux-labels
+
+override_dh_install:
+	# purge .la files
+	find $(CURDIR)/$(DESTDIR) -name "*.la" -type f -exec rm -f "{}" \;
+	# move pam module to correct location
+	mkdir -p $(CURDIR)/$(DESTDIR)/lib/${DEB_HOST_MULTIARCH}
+	mv $(CURDIR)/$(DESTDIR)/usr/lib/${DEB_HOST_MULTIARCH}/security \
+		$(CURDIR)/$(DESTDIR)/lib/${DEB_HOST_MULTIARCH}/
