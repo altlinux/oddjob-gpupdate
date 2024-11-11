@@ -205,6 +205,7 @@ getFlags(int argc, char** argv, char** gpo_exe, char** loglevel, int *flags)
 				"-q\tDo not print messages when applying "
 				"a policy.\n"
 				"-f\tForce GPT download.\n"
+				"-l LEVEL\tSet loglevel.\n"
 				"-p PATH\tOverride the gpo applier "
 				"binary (\"%s\").\n", *gpo_exe);
 			return -1;
