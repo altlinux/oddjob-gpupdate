@@ -24,19 +24,6 @@
 
       <interface name="@NAMESPACE@.oddjob_gpupdate">
 
-        <method name="gpupdate_computer_arg">
-          <helper exec="@mypkglibexecdir@/gpupdate -i"
-                  arguments="1"/>
-          <allow/>
-        </method>
-
-        <method name="gpupdate_arg">
-          <helper exec="@mypkglibexecdir@/gpupdate -i"
-                  arguments="1"
-                  prepend_user_name="yes"/>
-          <allow/>
-        </method>
-
         <method name="gpupdate_computer">
           <helper exec="@mypkglibexecdir@/gpupdate"
                   arguments="0"/>
@@ -54,6 +41,19 @@
           <helper exec="@mypkglibexecdir@/gpupdate"
                   arguments="1"/>
           <allow user="root"/>
+        </method>
+
+        <method name="gpupdate_computer_arg">
+          <helper exec="@mypkglibexecdir@/gpupdate -i"
+                  arguments="1"/>
+          <allow/>
+        </method>
+
+        <method name="gpupdate_arg">
+          <helper exec="@mypkglibexecdir@/gpupdate -i"
+                  arguments="1"
+                  prepend_user_name="yes"/>
+          <allow/>
         </method>
 
         <method name="gpupdate_computer_force">
