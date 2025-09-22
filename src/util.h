@@ -31,6 +31,7 @@
 #ifndef oddjob_util_h
 #define oddjob_util_h
 
+char** make_argv(char* a_str, size_t* argc_out, const char a_delim);
 ssize_t retry_write(int fd, unsigned char *buf, size_t length);
 void *oddjob_malloc(size_t size);
 void *oddjob_malloc0(size_t size);

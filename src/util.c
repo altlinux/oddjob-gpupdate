@@ -37,6 +37,35 @@
 #include <string.h>
 #include <unistd.h>
 
+/* Generate argv and argc from argument string (a_str)  */
+char** make_argv(char* a_str, size_t* argc_out, const char a_delim)
+{
+	if (!argc_out)
+	{
+		return NULL;
+	}
+
+	char delim[2] = {a_delim, 0};
+	char** result = NULL;
+	char* token = strtok(a_str, delim);
+
+	(*argc_out) = 0;
+
+	// getopt skip first argument........
+	result = reallocarray(result, ++(*argc_out), sizeof(char*));
+	result[0] = NULL;
+
+	while(token)
+	{
+		result = reallocarray(result, ++(*argc_out), sizeof(char*));
+		result[(*argc_out) - 1] = strdup(token);
+		token = strtok(NULL, delim);
+	}
+
+	return result;
+}
+
+
 /* Write to a file, handling transient errors. */
 ssize_t
 retry_write(int fd, unsigned char *buf, size_t length)

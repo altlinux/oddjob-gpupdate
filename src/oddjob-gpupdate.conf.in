@@ -55,6 +55,27 @@
            send_member="gpupdate_computer"/>
   </policy>
 
+
+  <!-- Allow anyone to try to call the gpupdate method, which is part of
+       the "gpupdate" interface implemented by the "/" object provided
+       by the @NAMESPACE@.oddjob_gpupdate service. -->
+  <policy context="default">
+    <allow send_destination="@NAMESPACE@.oddjob_gpupdate"
+           send_path="/"
+           send_interface="@NAMESPACE@.oddjob_gpupdate"
+           send_member="gpupdate_arg"/>
+  </policy>
+
+  <!-- Allow anyone to try to call the gpupdate method, which is part of
+       the "gpupdate" interface implemented by the "/" object provided
+       by the @NAMESPACE@.oddjob_gpupdate service. -->
+  <policy context="default">
+    <allow send_destination="@NAMESPACE@.oddjob_gpupdate"
+           send_path="/"
+           send_interface="@NAMESPACE@.oddjob_gpupdate"
+           send_member="gpupdate_computer_arg"/>
+  </policy>
+
   <!-- Allow anyone to try to call the gpupdate method, which is part of
        the "gpupdate" interface implemented by the "/" object provided
        by the @NAMESPACE@.oddjob_gpupdate_force service. -->
